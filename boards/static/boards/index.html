@@ -1,16 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>site</title>
-<script src="asana-0.9.1.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-<script src="index.js"></script>
-<link rel="stylesheet" href="board_style.css" />
-<link rel="stylesheet" href="chart_style.css" />
-<link rel="stylesheet" href="cumulative_flow_style.css" />
+	<title>site</title>
+	<script src="asana-0.9.1.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+	<script src="index.js"></script>
+	<link rel="stylesheet" href="board_style.css" />
+	<link rel="stylesheet" href="chart_style.css" />
+	<link rel="stylesheet" href="cumulative_flow_style.css" />
 </head>
 <body>
 
@@ -18,52 +18,54 @@
 
     <span class="pageTitle">Asana Planning Boards
         <span class="pageSubTitle hidden" id="authorize">
-            <a href="#" onclick="authorize();"><img src="https://github.com/Asana/oauth-examples/raw/master/public/asana-oauth-button.png?raw=true" alt="Sign in with Asana." class="pageTitleImage"/></a>
+            <a href="#" onclick="authorize();"><img src="https://github.com/Asana/oauth-examples/raw/master/public/asana-oauth-button.png?raw=true" alt="Sign in with Asana." class="pageTitleImage" /></a>
       <p>This is a sample board. You can move and edit tasks like you would with real Asana tasks once you sign in.</p>
         </span>
     </span>
 
-    <div id="project_header" >
-        <div style="display: inline;visibility: hidden;" id="projectSelector">
-            <input class="typeahead" type="text" placeholder="Select a project">
-        </div>
-        <div id="reverse_line">
-           <input id="reverse_order" type="checkbox" value="reverse">
-           <label for="reverse_order"></label>
-           <span>Reverse Order</span>
-       </div>
-   </div>
-<br/>
-    <div id="project"></div>
-    <table>
-      <tbody>
-      <tr id="board">
-      </tr>
-      </tbody>
-    </table>
-    <br />
-    <div class="cumulative-flow-viz-container">
-      <svg class="cumulative-flow-viz" width="1200" height="800">
-        <g class="cumulative-flow-content" transform="translate(100, 100)">
-          <g class="cumulative-flow-streams"></g>
-          <g class="cumulative-flow-axes"></g>
-        </g>
-      </svg>
-    </div>
-   <!--  <div class="burndown">
-      <svg id="visualisation" width="1000" height="500" class="chart"></svg>
-    </div> -->
+	<div id="project_header">
+		<div style="display: inline;visibility: hidden;" id="projectSelector">
+			<input class="typeahead" type="text" placeholder="Select a project">
+		</div>
+		<div id="reverse_line">
+			<input id="reverse_order" type="checkbox" value="reverse">
+			<label for="reverse_order"></label>
+			<span>Reverse Order</span>
+		</div>
+	</div>
+	<br />
 
-  </div>
+	<div id="project"></div>
+	<table>
+		<tbody>
+		<tr id="board">
+		</tr>
+		</tbody>
+	</table>
+	<br />
+
+	<div class="cumulative-flow-viz-container">
+		<svg class="cumulative-flow-viz" width="1200" height="800">
+			<g class="cumulative-flow-content" transform="translate(100, 100)">
+				<g class="cumulative-flow-streams"></g>
+				<g class="cumulative-flow-axes"></g>
+			</g>
+		</svg>
+	</div>
+	<!--  <div class="burndown">
+	   <svg id="visualisation" width="1000" height="500" class="chart"></svg>
+	 </div> -->
+
+</div>
 <span id="assigneeDialog">
   <div class="dropdown-header">
-    <span class="assignee-field-name">Assignee</span>
+	  <span class="assignee-field-name">Assignee</span>
     <span class="multi-sectioned">
       <input autocomplete="off" id="assignee_popup_typeahead_input" placeholder="Name or Email">
     </span>
-    <button id="assignee_popup_assign_to_me_button">
-      <span class="button-text">Assign to Me</span>
-    </button>
+	  <button id="assignee_popup_assign_to_me_button">
+		  <span class="button-text">Assign to Me</span>
+	  </button>
   </div>
 </span>
 <span class="cardEditDialog">
@@ -73,31 +75,32 @@
     </span>
     <span class="dialogColumn">
       <div>
-        <textarea class="cardTitle" placeholder="(unnamed task)"></textarea>
-      </div>
+		  <textarea class="cardTitle" placeholder="(unnamed task)"></textarea>
+	  </div>
       <div>
-        <textarea class="cardNotes" placeholder="Description"></textarea>
-      </div>
+		  <textarea class="cardNotes" placeholder="Description"></textarea>
+	  </div>
       <div class="cardComments">
-        Loading...
-      </div>
+		  Loading...
+	  </div>
       <div>
-        <textarea class="cardComment" placeholder="Write a comment..."></textarea>
-      </div>
+		  <textarea class="cardComment" placeholder="Write a comment..."></textarea>
+	  </div>
       <div class="cardEditTags">
-        <span class="cardTags"></span>
-        <span class="ui-icon ui-icon-plus tagAdd"></span>
-      </div>
+		  <span class="cardTags"></span>
+		  <span class="ui-icon ui-icon-plus tagAdd"></span>
+	  </div>
     </span>
     <span class="dialogColumnRight">
       <div class="cardAssignee">
-        <img id="cardAssigneeImage" src="head.png" alt="Unassigned" title="Click to assign"/>
-      </div>
+		  <img id="cardAssigneeImage" src="head.png" alt="Unassigned" title="Click to assign" />
+	  </div>
       <div>
-        <input class="cardValue" type="text" />
-      </div>
+		  <input class="cardValue" type="text" />
+	  </div>
     </span>
-    <button class="closeCard">Done</button><br>
+	  <button class="closeCard">Done</button>
+	  <br>
   </div>
 </span>
 <script>setupDemo();</script>
