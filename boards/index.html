@@ -8,6 +8,7 @@
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
 	<script src="index.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="board_style.css" />
 	<link rel="stylesheet" href="chart_style.css" />
 	<link rel="stylesheet" href="cumulative_flow_style.css" />
@@ -16,7 +17,7 @@
 
 <div id="content">
 
-    <span class="pageTitle">Asana Planning Boards
+    <span class="pageTitle">Asana Scrum Boards
         <span class="pageSubTitle hidden" id="authorize">
             <a href="#" onclick="authorize();"><img src="https://github.com/Asana/oauth-examples/raw/master/public/asana-oauth-button.png?raw=true" alt="Sign in with Asana." class="pageTitleImage" /></a>
       <p>This is a sample board. You can move and edit tasks like you would with real Asana tasks once you sign in.</p>
@@ -36,7 +37,7 @@
 	<br />
 
 	<div id="project"></div>
-	<table>
+	<table id="board-outer">
 		<tbody>
 		<tr id="board">
 		</tr>

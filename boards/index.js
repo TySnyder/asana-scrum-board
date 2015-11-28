@@ -18,15 +18,15 @@ var TODO_COLUMN = {
 var DEFAULT_COLUMNS = [
     TODO_COLUMN,
     /*{
-        name: 'In Progress:',
-        id: -2,
-        'status': 'new'
-    },
-    {
-        name: 'Done:',
-        id: -3,
-        'status': 'new'
-    }*/
+     name: 'In Progress:',
+     id: -2,
+     'status': 'new'
+     },
+     {
+     name: 'Done:',
+     id: -3,
+     'status': 'new'
+     }*/
 ];
 
 // Create a client.
@@ -124,43 +124,43 @@ function initBoard(project) {
             opt_fields: 'id,name,notes,this.assignee.name,this.assignee.photo.' + PHOTO_SIZE + ',created_at,completed_at,completed,due_on,parent,this.tags.name,this.tags.color'
         })
         .then(function(collection) {
-            $('#board').html('');
-            $('#board').prepend('<td id="add_column_cell" class="column">'
-                + '<div class="columnTitle">'
-                + '<input id="add_column" type="text" placeholder="Add a column"/>'
-                + '</div></td>');
-            $('#add_column').bind('keyup', function(event) {
-                if (event.keyCode == 13) {
-                    //Enter key up
-                    newColumnName = $('#add_column').val();
-                    addNewColumnAndSection(newColumnName, project.id);
-                }
-                event.preventDefault();
-            });
-            collection.stream().on('data', function(task) {
-                newSection = addTask(task, currentSection, project.id);
-                if (newSection !== currentSection) {
-                    numSections++;
-                    sections.push(newSection);
-                    currentSection = newSection;
-                    console.log('current section: ', currentSection);
-                }
-                currentTasks.push(task);
-                allTasks[ task.id ] = task;
-            });
-            //If any default columns were added, add them to Asana and update the cards
-            addDefaultSectionsToAsana(sections, project.id);
-            //doThis();
-        })
+                  $('#board').html('');
+                  $('#board').prepend('<td id="add_column_cell" class="column">'
+                                      + '<div class="columnTitle">'
+                                      + '<input id="add_column" type="text" placeholder="Add a column"/>'
+                                      + '</div></td>');
+                  $('#add_column').bind('keyup', function(event) {
+                      if (event.keyCode == 13) {
+                          //Enter key up
+                          newColumnName = $('#add_column').val();
+                          addNewColumnAndSection(newColumnName, project.id);
+                      }
+                      event.preventDefault();
+                  });
+                  collection.stream().on('data', function(task) {
+                      newSection = addTask(task, currentSection, project.id);
+                      if (newSection !== currentSection) {
+                          numSections++;
+                          sections.push(newSection);
+                          currentSection = newSection;
+                          console.log('current section: ', currentSection);
+                      }
+                      currentTasks.push(task);
+                      allTasks[ task.id ] = task;
+                  });
+                  //If any default columns were added, add them to Asana and update the cards
+                  addDefaultSectionsToAsana(sections, project.id);
+                  //doThis();
+              })
         .finally(function() {
-            postBoardSetup();
+                     postBoardSetup();
 
-            if (project.metaData &&
-                project.metaData.startDate &&
-                project.metaData.endDate) {
-                renderCumulativeFlow(project);
-            }
-        });
+                     if (project.metaData &&
+                         project.metaData.startDate &&
+                         project.metaData.endDate) {
+                         renderCumulativeFlow(project);
+                     }
+                 });
 }
 
 function addDefaultSectionsToAsana(sections, projectId) {
@@ -185,15 +185,15 @@ function addNewColumnAndSection(newColumnName, projectId) {
         }
         newSection = { 'name': newColumnName, id: -1, 'status': 'new' };
         addSectionInAsana(newSection, projectId,
-            function(section) {
-                newSection.id = newSection.new_id;
-                if ($('#reverse_order').is(":checked")) {
-                    reverseOrderAppendColumn(projectId, newSection);
-                } else {
-                    appendColumn(projectId, newSection);
-                }
-                $('#add_column').val('');
-            });
+                          function(section) {
+                              newSection.id = newSection.new_id;
+                              if ($('#reverse_order').is(":checked")) {
+                                  reverseOrderAppendColumn(projectId, newSection);
+                              } else {
+                                  appendColumn(projectId, newSection);
+                              }
+                              $('#add_column').val('');
+                          });
     }
 }
 var closeOnOutsideClick = function(e, dialog, dialogContainer) {
@@ -260,252 +260,252 @@ function postBoardSetup() {
          * Card update handlers *
          ************************/
         $(document.body).on('click', '.tagRemove', function(event) {
-                event.stopPropagation();
-                task = getTaskFromElement(this);
-                tagElement = $(this).closest('.tag');
-                removeTag(task, tagElement.prop('id'));
-                tagElement.remove();
-            })
+            event.stopPropagation();
+            task = getTaskFromElement(this);
+            tagElement = $(this).closest('.tag');
+            removeTag(task, tagElement.prop('id'));
+            tagElement.remove();
+        })
             .on('click', '.tagAdd', function(event) {
-                event.stopPropagation();
-                task = getTaskFromElement(this);
-                addTag(task, this);
-            })
+                    event.stopPropagation();
+                    task = getTaskFromElement(this);
+                    addTag(task, this);
+                })
             .on('change', '.cardComplete', function() {
-                getTaskFromElement(this).completed = $(this).prop('checked');
-            })
+                    getTaskFromElement(this).completed = $(this).prop('checked');
+                })
             .on('change', '.cardTitle', function() {
-                getTaskFromElement(this).pretty_name = $(this).val();
-            })
+                    getTaskFromElement(this).pretty_name = $(this).val();
+                })
             .on('change', '.cardNotes', function() {
-                getTaskFromElement(this).notes = $(this).val();
-            })
+                    getTaskFromElement(this).notes = $(this).val();
+                })
             .on('change', '.cardValue', function() {
-                getTaskFromElement(this).point_value = $(this).val();
-            })
+                    getTaskFromElement(this).point_value = $(this).val();
+                })
             .on('change', '.cardComment', function() {
-                event.stopPropagation();
-                addComment(getTaskFromElement(this), $(this).val());
-            })
+                    event.stopPropagation();
+                    addComment(getTaskFromElement(this), $(this).val());
+                })
             .on('change', '.card', function(event) {
-                updateTask(getTaskFromElement(this));
-            })
+                    updateTask(getTaskFromElement(this));
+                })
             .on('click', '.cardContainer', function(event) {
-                // Prevent click from causing new card to be created
-                event.stopPropagation();
-            })
+                    // Prevent click from causing new card to be created
+                    event.stopPropagation();
+                })
             .on('click', '.cardAssignee', function(event) {
-                event.stopPropagation();
-                $('#assigneeDialog').dialog({
-                    position: {
-                        my: "top+5",
-                        at: "center",
-                        of: $(this).closest('.card'),
-                        collision: "flipfit"
-                    },
-                });
-                selectUser(getTaskFromElement(this));
-            })
+                    event.stopPropagation();
+                    $('#assigneeDialog').dialog({
+                        position: {
+                            my: "top+5",
+                            at: "center",
+                            of: $(this).closest('.card'),
+                            collision: "flipfit"
+                        },
+                    });
+                    selectUser(getTaskFromElement(this));
+                })
             .on('card:refresh', function(event, task) {
-                var card = $('#' + task.id);
-                card.find('.cardTitle').val(task.pretty_name);
-                card.find('.cardValue').val(task.point_value);
-                card.find('.cardComplete').prop('checked', task.completed);
-                var userImage = getUserImage(task.assignee);
-                // Update the image on the card
-                $('#assignee_img_' + task.id)
-                    .attr("src", userImage)
-                    .attr("alt", task.assignee ? task.assignee.name : 'Unassigned');
-            })
+                    var card = $('#' + task.id);
+                    card.find('.cardTitle').val(task.pretty_name);
+                    card.find('.cardValue').val(task.point_value);
+                    card.find('.cardComplete').prop('checked', task.completed);
+                    var userImage = getUserImage(task.assignee);
+                    // Update the image on the card
+                    $('#assignee_img_' + task.id)
+                        .attr("src", userImage)
+                        .attr("alt", task.assignee ? task.assignee.name : 'Unassigned');
+                })
             .on('click', '.zoomin', function(event) {
-                event.stopPropagation();
-                $('.cardEditDialog').dialog({
-                    position: {
-                        my: "top+5",
-                        at: "center",
-                        of: $(this).closest('.card'),
-                        collision: "flipfit"
-                    }
-                });
-                cardEdit(getTaskFromElement(this));
-            })
-            .on('mouseenter', '.card', function(event) {
-                if ($(this).children('.zoomin').hasClass('hidden')) {
-                    $(this).children('.zoomin').removeClass('hidden');
-                }
-            })
-            .on('mouseleave', '.card', function(event) {
-                $(this).children('.zoomin').addClass('hidden');
-            })
-            /************************
-             * Create task handlers *
-             ************************/
+                    event.stopPropagation();
+                    $('.cardEditDialog').dialog({
+                        position: {
+                            my: "top+5",
+                            at: "center",
+                            of: $(this).closest('.card'),
+                            collision: "flipfit"
+                        }
+                    });
+                    cardEdit(getTaskFromElement(this));
+                })
+            /*.on('mouseenter', '.card', function(event) {
+             if ($(this).children('.zoomin').hasClass('hidden')) {
+             $(this).children('.zoomin').removeClass('hidden');
+             }
+             })
+             .on('mouseleave', '.card', function(event) {
+             $(this).children('.zoomin').addClass('hidden');
+             })*/
+        /************************
+         * Create task handlers *
+         ************************/
             // On enter, show the plus icon unless already clicked
-            .on('mouseenter', '.cardPadding, .column', function(event) {
-                if ($(this).children('.zoomin').hasClass('hidden')) {
-                    $(this).children('.zoomin').removeClass('hidden');
-                }
-                if ($(this).children('.load').hasClass('hidden')) {
-                    $(this).children('.plus').removeClass('hidden');
-                }
-            })
-            // On exit, hide the plus icon
-            .on('mouseleave', '.cardPadding, .column', function(event) {
-                $(this).children('.plus').addClass('hidden');
-                $(this).children('.plus').addClass('hidden');
-            })
+            /*.on('mouseenter', '.cardPadding, .column', function(event) {
+             if ($(this).children('.zoomin').hasClass('hidden')) {
+             $(this).children('.zoomin').removeClass('hidden');
+             }
+             if ($(this).children('.load').hasClass('hidden')) {
+             $(this).children('.plus').removeClass('hidden');
+             }
+             })
+             // On exit, hide the plus icon
+             .on('mouseleave', '.cardPadding, .column', function(event) {
+             $(this).children('.plus').addClass('hidden');
+             $(this).children('.plus').addClass('hidden');
+             })*/
             // Add/remove plus icon from the resident column so it does not appear
             // when mouse is over a card
-            .on('mouseenter', '.cardContainer', function(event) {
-                event.stopPropagation();
-                $(this).parent().children('.plus').addClass('hidden');
-            })
-            .on('mouseleave', '.cardContainer', function(event) {
-                event.stopPropagation();
-                $(this).parent().children('.plus').removeClass('hidden');
-            })
+            /*.on('mouseenter', '.cardContainer', function(event) {
+             event.stopPropagation();
+             $(this).parent().children('.plus').addClass('hidden');
+             })
+             .on('mouseleave', '.cardContainer', function(event) {
+             event.stopPropagation();
+             $(this).parent().children('.plus').removeClass('hidden');
+             })*/
             // If the plus icon is showing, create new task on click
             .on('click', '.cardPadding, .column', function(event) {
-                var plus = $(this).children('.plus');
-                var load = $(this).children('.load');
-                var opts = {
-                    'project': currentProject.id
-                };
-
-                var place;
-                if ($(this).hasClass('cardPadding')) {
-                    id = $(this).parent().children('.card').prop('id');
-                    opts[ 'insert_before' ] = id;
-                    place = $('#' + id).parent();
-                } else {
-                    id = $(this).prop('id');
-                    opts[ 'section' ] = id;
-                    place = '#' + id + ' > .addCard';
-                }
-
-                event.stopPropagation();
-                if (!plus.hasClass('hidden') && load.hasClass('hidden')) {
-                    // Show the hidden icon, hide the plus icon
-                    load.removeClass('hidden');
-                    plus.addClass('hidden');
-                    // Animate the load icon
-                    var lower = function() {
-                        load.animate({ 'opacity': 0 }, 1000, higher);
+                    var plus = $(this).children('.plus');
+                    var load = $(this).children('.load');
+                    var opts = {
+                        'project': currentProject.id
                     };
-                    var higher = function() {
-                        load.animate({ 'opacity': 1 }, 500, lower);
-                    };
-                    lower();
 
-                    // Create the task and add it to correct project
-                    client.tasks.createInWorkspace(currentWorkspace.id).then(function(new_task) {
-                        client.tasks.addProject(
-                            new_task.id,
-                            opts
-                        ).then(function(object) {
-                            // Create the card
-                            sectionCard = $(this).parent();
-                            createCard(new_task, place);
-                            allTasks[ new_task.id ] = new_task;
-                        }).finally(function() {
-                            // Hide the load icon
-                            load.addClass('hidden');
+                    var place;
+                    if ($(this).hasClass('cardPadding')) {
+                        id = $(this).parent().children('.card').prop('id');
+                        opts[ 'insert_before' ] = id;
+                        place = $('#' + id).parent();
+                    } else {
+                        id = $(this).prop('id');
+                        opts[ 'section' ] = id;
+                        place = '#' + id + ' > .addCard';
+                    }
+
+                    event.stopPropagation();
+                    if (!plus.hasClass('hidden') && load.hasClass('hidden')) {
+                        // Show the hidden icon, hide the plus icon
+                        load.removeClass('hidden');
+                        plus.addClass('hidden');
+                        // Animate the load icon
+                        var lower = function() {
+                            load.animate({ 'opacity': 0 }, 1000, higher);
+                        };
+                        var higher = function() {
+                            load.animate({ 'opacity': 1 }, 500, lower);
+                        };
+                        lower();
+
+                        // Create the task and add it to correct project
+                        client.tasks.createInWorkspace(currentWorkspace.id).then(function(new_task) {
+                            client.tasks.addProject(
+                                new_task.id,
+                                opts
+                            ).then(function(object) {
+                                       // Create the card
+                                       sectionCard = $(this).parent();
+                                       createCard(new_task, place);
+                                       allTasks[ new_task.id ] = new_task;
+                                   }).finally(function() {
+                                                  // Hide the load icon
+                                                  load.addClass('hidden');
+                                              });
                         });
-                    });
-                }
-            })
+                    }
+                })
             .on('click', '.column', function(event) {
-                event.stopPropagation();
+                    event.stopPropagation();
 
-                var load = $(this).children('.load');
-                var id = $(this).prop('id');
-                var opts = {
-                    'project': currentProject.id,
-                    'section': id
-                };
-
-                if (load.hasClass('hidden')) {
-                    load.removeClass('hidden');
-                    // Animate the load icon
-                    var lower = function() {
-                        load.animate({ 'opacity': 0 }, 1000, higher);
+                    var load = $(this).children('.load');
+                    var id = $(this).prop('id');
+                    var opts = {
+                        'project': currentProject.id,
+                        'section': id
                     };
-                    var higher = function() {
-                        load.animate({ 'opacity': 1 }, 500, lower);
-                    };
-                    lower();
 
-                    // Create the task and add it to correct project
-                    client.tasks.createInWorkspace(currentWorkspace.id).then(function(new_task) {
-                        client.tasks.addProject(
-                            new_task.id,
-                            opts
-                        ).then(function(object) {
-                            // Create the card
-                            createCard(new_task, '#' + id + ' > .addCard');
-                            allTasks[ new_task.id ] = new_task;
-                        }).finally(function() {
-                            // Hide the load icon
-                            load.addClass('hidden');
+                    if (load.hasClass('hidden')) {
+                        load.removeClass('hidden');
+                        // Animate the load icon
+                        var lower = function() {
+                            load.animate({ 'opacity': 0 }, 1000, higher);
+                        };
+                        var higher = function() {
+                            load.animate({ 'opacity': 1 }, 500, lower);
+                        };
+                        lower();
+
+                        // Create the task and add it to correct project
+                        client.tasks.createInWorkspace(currentWorkspace.id).then(function(new_task) {
+                            client.tasks.addProject(
+                                new_task.id,
+                                opts
+                            ).then(function(object) {
+                                       // Create the card
+                                       createCard(new_task, '#' + id + ' > .addCard');
+                                       allTasks[ new_task.id ] = new_task;
+                                   }).finally(function() {
+                                                  // Hide the load icon
+                                                  load.addClass('hidden');
+                                              });
                         });
-                    });
-                }
-            })
-            /**************************
-             * Drag and drop handlers *
-             **************************/
+                    }
+                })
+        /**************************
+         * Drag and drop handlers *
+         **************************/
             .on('dragstart', '.cardContainer', function(event) {
-                event.originalEvent.dataTransfer.setData(
-                    "text/plain", $(event.target).children('.card').prop('id'));
-                this.style.opacity = '0.4';
-                dragSourceColumn = this.parentElement;
-            })
+                    event.originalEvent.dataTransfer.setData(
+                        "text/plain", $(event.target).children('.card').prop('id'));
+                    this.style.opacity = '0.4';
+                    dragSourceColumn = this.parentElement;
+                })
             .on('dragend', '.cardContainer', function(event) {
-                this.style.opacity = '1.0';
+                    this.style.opacity = '1.0';
 
-                // Remove any existent drop shadow when done dragging
-                if (taskDropTarget) {
-                    removeDropShadow();
-                }
-            })
+                    // Remove any existent drop shadow when done dragging
+                    if (taskDropTarget) {
+                        removeDropShadow();
+                    }
+                })
             .on('dragenter', '.card', function(event) {
-                // Determine the card being dragged over
-                var target;
-                if ($(event.target).hasClass('shadow')) {
-                    return;
-                }
-                if ($(event.target).hasClass('cardContainer')) {
-                    target = event.target;
-                } else if ($(event.target).parents('.cardContainer')) {
-                    target = $(event.target).parents('.cardContainer').get(0);
-                }
+                    // Determine the card being dragged over
+                    var target;
+                    if ($(event.target).hasClass('shadow')) {
+                        return;
+                    }
+                    if ($(event.target).hasClass('cardContainer')) {
+                        target = event.target;
+                    } else if ($(event.target).parents('.cardContainer')) {
+                        target = $(event.target).parents('.cardContainer').get(0);
+                    }
 
-                // Remove the drop shadow if dragging over a different card
-                if (taskDropTarget && target !== taskDropTarget) {
-                    removeDropShadow();
-                }
+                    // Remove the drop shadow if dragging over a different card
+                    if (taskDropTarget && target !== taskDropTarget) {
+                        removeDropShadow();
+                    }
 
-                // Add drop shadow if none exists
-                if (!taskDropTarget) {
-                    addDropShadow(target, 'before');
-                }
-            })
+                    // Add drop shadow if none exists
+                    if (!taskDropTarget) {
+                        addDropShadow(target, 'before');
+                    }
+                })
             .on('dragover', '.column', function(event) {
-                event.preventDefault();
-                if (taskDropTarget && taskDropTarget != this) {
-                    removeDropShadow();
-                }
-                if (!taskDropTarget) {
-                    addDropShadow($(this).children('.addCard'), 'before');
-                }
-            })
+                    event.preventDefault();
+                    if (taskDropTarget && taskDropTarget != this) {
+                        removeDropShadow();
+                    }
+                    if (!taskDropTarget) {
+                        addDropShadow($(this).children('.addCard'), 'before');
+                    }
+                })
             .on('dragover', '#dropShadow', function(event) {
-                // Allow cards to be dropped onto the shadow
-                event.stopPropagation();
-                event.preventDefault();
-            }).on('drop', '.column', function(event) {
-            doDropCardEvent(event, this, currentProject.id);
-        });
+                    // Allow cards to be dropped onto the shadow
+                    event.stopPropagation();
+                    event.preventDefault();
+                }).on('drop', '.column', function(event) {
+                          doDropCardEvent(event, this, currentProject.id);
+                      });
         eventsInitialized = true;
     }
 }
@@ -537,8 +537,8 @@ function doDropCardEvent(event, targetColumn, projectId) {
                 'section': null
             }
         ).then(function() {
-            moveTaskInAsana(notecard, targetProject);
-        });
+                   moveTaskInAsana(notecard, targetProject);
+               });
     } else {
         moveTaskInAsana(notecard, targetProject);
     }
@@ -599,13 +599,13 @@ function newTagElement(tag) {
         colorClass = 'no-color';
     }
     return '<span class="'
-        + colorClass
-        + ' tag" id="'
-        + tag.id
-        + '">'
-        + tag.name
-        + '<a href="#" class="tagRemove">x</a>'
-        + '</span> '
+           + colorClass
+           + ' tag" id="'
+           + tag.id
+           + '">'
+           + tag.name
+           + '<a href="#" class="tagRemove">x</a>'
+           + '</span> '
 }
 
 function createCard(task, beforeCard) {
@@ -638,7 +638,7 @@ function createCard(task, beforeCard) {
         + '</div>'
         + '<div class="card" id="'
         + task.id + '">'
-        + '<span class="ui-icon ui-icon-extlink zoomin hidden"></span>'
+        + '<span class="ui-icon ui-icon-extlink zoomin"></span>'
         + '<div class="personDone">'
         + '<div class="cardAssignee" >'
         + '<img id="assignee_img_' + task.id + '" src="'
@@ -759,33 +759,33 @@ function addTag(task, addIconElement) {
 
     $(addIconElement).before('<input autocomplete="off" id="tag_typeahead_input" placeholder="tag">');
     var tagInput = $('#tag_typeahead_input').autocomplete({
-            source: tagMatcher(),
-        })
+        source: tagMatcher(),
+    })
         .val('')
         .focus()
         .off('autocompleteselect')
         .on('autocompleteselect', function(ev, ui) {
-            console.log('Selection: ', ui.item);
-            client.tags.findById(
-                ui.item.value,
-                {
-                    opt_fields: 'id,name,color',
-                }
-            ).then(function(tag) {
-                console.log('Adding tag to task: ', task, tag);
-                client.tasks.addTag(
-                    task.id,
+                console.log('Selection: ', ui.item);
+                client.tags.findById(
+                    ui.item.value,
                     {
-                        'tag': tag.id,
-                    });
-                $('.cardTags').append(newTagElement(tag));
-                tagInput.remove();
-            }, function(reason) {
-                console.log('Exception: ' + reason);
-            }).finally(function() {
-                $('#tag_typeahead_input').autocomplete('destroy');
+                        opt_fields: 'id,name,color',
+                    }
+                ).then(function(tag) {
+                           console.log('Adding tag to task: ', task, tag);
+                           client.tasks.addTag(
+                               task.id,
+                               {
+                                   'tag': tag.id,
+                               });
+                           $('.cardTags').append(newTagElement(tag));
+                           tagInput.remove();
+                       }, function(reason) {
+                           console.log('Exception: ' + reason);
+                       }).finally(function() {
+                                      $('#tag_typeahead_input').autocomplete('destroy');
+                                  });
             });
-        });
 }
 
 function appendColumn(projectId, section) {
@@ -820,18 +820,18 @@ function prependColumn(projectId, section) {
 function createNewColumnCode(projectId, section) {
     var columnName = section.name.replace(':', '');
     var newColumnCode = '<td class="column" id="' + section.id + '">'
-        + '<div class="columnTitle"><span class="sectionTitle">'
-        + columnName + '</span>'
-        + '<span class="sectionValue">'
-        + 0
-        + '</span></div>'
-        + '<div class="addCard">'
-        + 'Add a card'
-        + '</div>'
-        + '<div class="load hidden">'
-        + '<svg class="icon" viewBox="0 0 2 2" xlmns="http://www.w3.org/2000/svg">'
-        + '<circle cx="1" cy="1" r="1" /></svg></div>'
-        + '</td>'
+                        + '<div class="columnTitle"><span class="sectionTitle">'
+                        + columnName + '</span>'
+                        + '<span class="sectionValue">'
+                        + 0
+                        + '</span></div>'
+                        + '<div class="addCard btn btn-primary">'
+                        + 'Add a card'
+                        + '</div>'
+                        + '<div class="load hidden">'
+                        + '<svg class="icon" viewBox="0 0 2 2" xlmns="http://www.w3.org/2000/svg">'
+                        + '<circle cx="1" cy="1" r="1" /></svg></div>'
+                        + '</td>'
     return newColumnCode;
 }
 function bindDragoverToColumn(section) {
@@ -861,16 +861,16 @@ function addOrderedSectionsInAsana(startIndex, sectionList, projectId) {
     }
     if (startIndex < sectionList.length && sectionList[ startIndex ].status == 'new') {
         addSectionInAsana(sectionList[ startIndex ], projectId,
-            function(section) {
-                if ($('#' + sectionList[ startIndex ].id).length != 0) {
-                    console.log('updating column in view for id = ' + sectionList[ startIndex ].id);
-                    updateCardSectionIds(sectionList[ startIndex ], projectId);
-                } else {
-                    sectionList[ startIndex ].id = sectionList[ startIndex ].new_id
-                    appendColumn(projectId, sectionList[ startIndex ]);
-                }
-                addOrderedSectionsInAsana(++startIndex, sectionList, projectId)
-            });
+                          function(section) {
+                              if ($('#' + sectionList[ startIndex ].id).length != 0) {
+                                  console.log('updating column in view for id = ' + sectionList[ startIndex ].id);
+                                  updateCardSectionIds(sectionList[ startIndex ], projectId);
+                              } else {
+                                  sectionList[ startIndex ].id = sectionList[ startIndex ].new_id
+                                  appendColumn(projectId, sectionList[ startIndex ]);
+                              }
+                              addOrderedSectionsInAsana(++startIndex, sectionList, projectId)
+                          });
     }
 
 }
@@ -885,13 +885,13 @@ function addSectionInAsana(sectionTemplate, projectId, finallyFunction) {
             'workspace': currentWorkspace.id
         }
     ).then(function(section) {
-        console.log('New section id: ', section);
-        //update sectionTemplate with new id
-        sectionTemplate.new_id = section.id;
-        return section;
-    }, function(reason) {
-        console.log('Exception: ' + reason);
-    }).finally(finallyFunction);
+               console.log('New section id: ', section);
+               //update sectionTemplate with new id
+               sectionTemplate.new_id = section.id;
+               return section;
+           }, function(reason) {
+               console.log('Exception: ' + reason);
+           }).finally(finallyFunction);
 
 }
 
@@ -916,45 +916,45 @@ function selectUser(task) {
     $('#assignee_popup_assign_to_me_button').button()
         .off('click')
         .click(function(event) {
-            task.assignee = currentUser;
-            updateAssignee(task);
-            $('#assigneeDialog').dialog("close");
-        });
+                   task.assignee = currentUser;
+                   updateAssignee(task);
+                   $('#assigneeDialog').dialog("close");
+               });
     var dialogInput = $('#assignee_popup_typeahead_input');
     var assigneeDialog = $('#assigneeDialog').dialog('open')
         .off('dialogbeforeclose')
         .on('dialogbeforeclose', function(event, ui) {
-            if (dialogInput.val() === '') {
-                task.assignee = null;
-                updateAssignee(task);
-            }
-        });
+                if (dialogInput.val() === '') {
+                    task.assignee = null;
+                    updateAssignee(task);
+                }
+            });
     dialogInput.autocomplete({
-            source: userMatcher(),
-        })
+        source: userMatcher(),
+    })
         .val(task.assignee ? task.assignee.name : '')
         .select()
         .off('autocompleteselect')
         .on('autocompleteselect', function(ev, ui) {
-            console.log('Selection: ', ui.item);
-            assigneeDialog.dialog('close');
-            dialogInput.autocomplete('destroy');
-            // TODO change the assignee to an 'updating' icon
-            client.users.findById(
-                ui.item.value,
-                {
-                    opt_fields: 'id,name,this.photo.' + PHOTO_SIZE,
-                }
-            ).then(function(user) {
-                console.log('Full user: ', user);
-                task.assignee = user;
-                return user;
-            }, function(reason) {
-                console.log('Exception: ' + reason);
-            }).finally(function(user) {
-                updateAssignee(task);
+                console.log('Selection: ', ui.item);
+                assigneeDialog.dialog('close');
+                dialogInput.autocomplete('destroy');
+                // TODO change the assignee to an 'updating' icon
+                client.users.findById(
+                    ui.item.value,
+                    {
+                        opt_fields: 'id,name,this.photo.' + PHOTO_SIZE,
+                    }
+                ).then(function(user) {
+                           console.log('Full user: ', user);
+                           task.assignee = user;
+                           return user;
+                       }, function(reason) {
+                           console.log('Exception: ' + reason);
+                       }).finally(function(user) {
+                                      updateAssignee(task);
+                                  });
             });
-        });
 }
 
 function cardEdit(task) {
@@ -963,8 +963,8 @@ function cardEdit(task) {
     dlog.find('.card').attr('id', task.id);
     $('.closeCard').button()
         .click(function(event) {
-            dlog.dialog("close");
-        });
+                   dlog.dialog("close");
+               });
     dlog.find('.cardTitle').val(task.pretty_name);
     dlog.find('.cardNotes').val(task.notes);
     dlog.find('.cardValue').val(task.point_value);
@@ -985,50 +985,50 @@ function cardEdit(task) {
     dlog.dialog('open')
         .off('dialogbeforeclose')
         .on('dialogbeforeclose', function(event, ui) {
-            $('#' + task.id).trigger('card:refresh', task);
-        });
+                $('#' + task.id).trigger('card:refresh', task);
+            });
     client.stories.findByTask(
         task.id,
         {
             opt_fields: 'id,type,html_text,this.created_by.name'
         })
         .then(function(collection) {
-            comments.html('');
-            collection.stream().on('data', function(story) {
-                if (story.type === 'comment') {
-                    console.log(story);
-                    comments.append('<div class="cardCommentInfo">'
-                        + '<b>' + story.created_by.name + ': ' + '</b>'
-                        + story.html_text + '</div>');
-                }
-            });
-        });
+                  comments.html('');
+                  collection.stream().on('data', function(story) {
+                      if (story.type === 'comment') {
+                          console.log(story);
+                          comments.append('<div class="cardCommentInfo">'
+                                          + '<b>' + story.created_by.name + ': ' + '</b>'
+                                          + story.html_text + '</div>');
+                      }
+                  });
+              });
 }
 
 function selectProject() {
     var projectInput = $('#projectSelector .typeahead');
     projectInput.autocomplete({
-            source: projectMatcher(),
-        })
+        source: projectMatcher(),
+    })
         .val('')
         .focus()
         .select()
         .on('autocompleteselect', function(ev, ui) {
-            console.log('Selection: ', ui.item)
-            client.projects.findById(
-                ui.item.value,
-                {
-                    opt_fields: 'id,name,archived,created_at,modified_at,color,notes,workspace,team',
-                }
-            ).then(function(project) {
-                project.metaData = parseProjectMetaData(project.notes);
-                console.log('Project: ', project);
-                currentProject = project;
-                initBoard(project);
-                projectInput.val(project.name);
+                console.log('Selection: ', ui.item)
+                client.projects.findById(
+                    ui.item.value,
+                    {
+                        opt_fields: 'id,name,archived,created_at,modified_at,color,notes,workspace,team',
+                    }
+                ).then(function(project) {
+                           project.metaData = parseProjectMetaData(project.notes);
+                           console.log('Project: ', project);
+                           currentProject = project;
+                           initBoard(project);
+                           projectInput.val(project.name);
+                       });
+                projectInput.blur();
             });
-            projectInput.blur();
-        });
     $('#projectSelector').css("visibility", "visible");
 }
 
@@ -1096,10 +1096,10 @@ var objectMatcher = function(objectType) {
                 query: request.term,
             })
             .then(function(response) {
-                responseCallback(response.data.map(function(obj) {
-                    return { label: obj.name, value: obj.id };
-                }));
-            });
+                      responseCallback(response.data.map(function(obj) {
+                          return { label: obj.name, value: obj.id };
+                      }));
+                  });
     }
 };
 
@@ -1362,17 +1362,17 @@ function renderChart(project, tasks) {
         .attr("class", "grid")
         .attr("transform", "translate(0," + (height - margins.top) + ")")
         .call(make_x_axis()
-            .tickSize((-height) + (margins.top + margins.bottom), 0, 0)
-            .tickFormat("")
-        )
+                  .tickSize((-height) + (margins.top + margins.bottom), 0, 0)
+                  .tickFormat("")
+    )
 
     svg.append("g")
         .attr("class", "grid")
         .attr("transform", "translate(" + (margins.left) + ",0)")
         .call(make_y_axis()
-            .tickSize((-width) + (margins.right + margins.left), 0, 0)
-            .tickFormat("")
-        )
+                  .tickSize((-width) + (margins.right + margins.left), 0, 0)
+                  .tickFormat("")
+    )
 
     svg.append("svg:g")
         .attr("class", "x axis")
@@ -1386,11 +1386,11 @@ function renderChart(project, tasks) {
 
     var lineFunc = d3.svg.line()
         .x(function(d) {
-            return xRange(d.x);
-        })
+               return xRange(d.x);
+           })
         .y(function(d) {
-            return yRange(d.y);
-        })
+               return yRange(d.y);
+           })
         .interpolate('basis');
 
     var lineDataIdeal = [
@@ -1499,228 +1499,227 @@ var renderCumulativeFlow = function(project) {
             opt_fields: 'id,name'
         })
         .then(function(taskCollection) {
-            var currentSection = null;
-            var tasks = [];
-            var storyPromises = [];
-            var sectionIndex = 1;
+                  var currentSection = null;
+                  var tasks = [];
+                  var storyPromises = [];
+                  var sectionIndex = 1;
 
-            var taskStream = taskCollection.stream();
+                  var taskStream = taskCollection.stream();
 
-            taskStream.on('data', function(task) {
-                if (isSectionTask(task)) {
-                    currentSection = task.name.substring(0, task.name.length - 1);
-                    sections.push({
-                        'index': sectionIndex,
-                        'name': currentSection
-                    });
-                    sectionIndex++;
-                } else {
-                    task.section = currentSection;
-                    postProcessTask(task);
+                  taskStream.on('data', function(task) {
+                      if (isSectionTask(task)) {
+                          currentSection = task.name.substring(0, task.name.length - 1);
+                          sections.push({
+                              'index': sectionIndex,
+                              'name': currentSection
+                          });
+                          sectionIndex++;
+                      } else {
+                          task.section = currentSection;
+                          postProcessTask(task);
 
-                    tasks.push(task);
+                          tasks.push(task);
 
-                    var storyPromise =
-                        client.stories.findByTask(task.id, { 'limit': 100 })
-                            .then(function(storyCollection) {
-                                task.stories = storyCollection.data
-                                    .map(function(story) {
-                                        if (story.type === 'system') {
-                                            var match = story.text.match(/moved from (.+) to (.+) \((.+)\)/);
-                                            if (match && match[ 3 ] === project.name) {
-                                                story.oldSection = match[ 1 ];
-                                                story.newSection = match[ 2 ];
-                                            }
-                                        }
-                                        return story;
+                          var storyPromise =
+                              client.stories.findByTask(task.id, { 'limit': 100 })
+                                  .then(function(storyCollection) {
+                                            task.stories = storyCollection.data
+                                                .map(function(story) {
+                                                         if (story.type === 'system') {
+                                                             var match = story.text.match(/moved from (.+) to (.+) \((.+)\)/);
+                                                             if (match && match[ 3 ] === project.name) {
+                                                                 story.oldSection = match[ 1 ];
+                                                                 story.newSection = match[ 2 ];
+                                                             }
+                                                         }
+                                                         return story;
+                                                     })
+                                                .filter(function(story) {
+                                                            // Filter to only the section move stories.
+                                                            return !!story.oldSection;
+                                                        });
+                                        });
+
+                          storyPromises.push(storyPromise);
+                      }
+                  });
+
+                  return new Promise(function(resolve, reject) {
+                      taskStream.on('end', function() {
+                          Promise.all(storyPromises)
+                              .then(function() {
+                                        resolve(tasks);
                                     })
-                                    .filter(function(story) {
-                                        // Filter to only the section move stories.
-                                        return !!story.oldSection;
-                                    });
+                      });
+                  })
+              })
+        .then(function(tasks) {
+                  function parseNaiveDate(dateString) {
+                      var match = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(dateString);
+                      if (!match) {
+                          return null;
+                      }
+                      return new Date(parseInt(match[ 1 ], 10),
+                                      parseInt(match[ 2 ], 10) - 1, // Months are zero-based
+                                      parseInt(match[ 3 ], 10));
+                  }
+
+                  var startDate = parseNaiveDate(project.metaData.startDate);
+                  var endDate = parseNaiveDate(project.metaData.endDate);
+
+                  var chartModel = [];
+                  var currentDate = new Date(startDate.getTime());
+
+                  while (currentDate <= endDate) {
+                      var dayModel = {
+                          'date': new Date(currentDate.getTime()),
+                          'sections': [],
+                          'sectionsByName': {}
+                      };
+                      sections.forEach(function(section) {
+                          var sectionModel = {
+                              'name': section.name,
+                              'tasks': [],
+                              'points': 0
+                          };
+                          dayModel.sectionsByName[ section.name ] = sectionModel;
+                          dayModel.sections.push(sectionModel);
+                      });
+
+                      // Advance currentDate to the next day. This will be midnight in between
+                      // the day we're processing and the next day.
+                      currentDate.setDate(currentDate.getDate() + 1);
+
+                      var isoDateString = currentDate.toISOString();
+                      tasks.forEach(function(task) {
+                          var sectionName = getSectionAsOfDate(task, isoDateString);
+                          // null section at this point means the task didn't even exist as of
+                          // this date. Tasks that were not in any section as of this date are now
+                          // under "Uncategorized" section.
+                          if (sectionName) {
+                              var sectionModel = dayModel.sectionsByName[ sectionName ];
+                              sectionModel.tasks.push(task);
+                              sectionModel.points += task.points;
+                          }
+                      });
+
+                      chartModel.push(dayModel);
+                  }
+
+                  var width = 1000;
+                  var height = 600;
+                  var timeScale = d3.time.scale()
+                      .domain([ startDate, endDate ])
+                      .range([ 0, width ]);
+                  var pointScale = d3.scale.linear()
+                      .domain([
+                          0,
+                          d3.max(chartModel, function(d) {
+                              return d3.sum(d.sections, function(d) {
+                                  return d.points;
+                              });
+                          })
+                      ])
+                      .range([ height, 0 ]);
+                  var colorScale = d3.scale.category10();
+
+                  var sectionLayerModel = sections.map(function(section) {
+                      var sectionName = section.name;
+                      var layer = {
+                          'index': section.index,
+                          'name': sectionName
+                      };
+
+                      layer.days = chartModel.map(function(day) {
+                          return {
+                              'date': day.date,
+                              'points': day.sectionsByName[ sectionName ].points,
+                              'tasks': day.sectionsByName[ sectionName ].tasks,
+                              'y0': 0
+                          };
+                      });
+
+                      return layer;
+                  });
+
+                  sectionLayerModel.reverse();
+
+                  var stack = d3.layout.stack()
+                      .values(function(layer) {
+                                  return layer.days;
+                              })
+                      .x(function(d) {
+                             return d.date;
+                         })
+                      .y(function(d) {
+                             return d.points;
+                         })
+                      .out(function(d, y0) {
+                               d.y0 = y0;
+                           });
+
+                  stack(sectionLayerModel);
+
+                  var streamContainer = d3.select('.cumulative-flow-viz .cumulative-flow-streams');
+                  streamContainer.selectAll('*').remove();
+
+                  // Set up d3's area function to draw each stream
+                  var calcStreamArea = d3.svg.area()
+                      .x(function(d) {
+                             return timeScale(d.date);
+                         })
+                      .y0(function(d) {
+                              return pointScale(d.y0);
+                          })
+                      .y1(function(d) {
+                              return pointScale(d.y0 + d.points);
+                          });
+
+                  // g for each layer dataset.
+                  var streamGroups = streamContainer
+                      .selectAll('g')
+                      .data(sectionLayerModel, function(d) {
+                                return d.name;
                             });
 
-                    storyPromises.push(storyPromise);
-                }
-            });
+                  // Add any entering layer as an svg:g with a svg:path element inside.
+                  var enter = streamGroups
+                      .enter()
+                      .append('g')
+                      .attr('class', function(d) {
+                                return 'section-stream-' + d.name.trim().replace(/\s+/g, '-').toLowerCase();
+                            })
+                      .append('path')
+                      .attr('class', 'stream');
 
-            return new Promise(function(resolve, reject) {
-                taskStream.on('end', function() {
-                    Promise.all(storyPromises)
-                        .then(function() {
-                            resolve(tasks);
-                        })
-                });
-            })
-        })
-        .then(function(tasks) {
-            function parseNaiveDate(dateString) {
-                var match = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(dateString);
-                if (!match) {
-                    return null;
-                }
-                return new Date(parseInt(match[ 1 ], 10),
-                    parseInt(match[ 2 ], 10) - 1, // Months are zero-based
-                    parseInt(match[ 3 ], 10));
-            }
+                  // Set the stream path for each series
+                  streamGroups
+                      .selectAll('.stream')
+                      .attr('d', function(d) {
+                                return calcStreamArea(d.days);
+                            })
+                      .attr('fill', function(d) {
+                                return colorScale(d.index);
+                            });
 
-            var startDate = parseNaiveDate(project.metaData.startDate);
-            var endDate = parseNaiveDate(project.metaData.endDate);
+                  var axesContainer = d3.select('.cumulative-flow-viz .cumulative-flow-axes');
+                  axesContainer.selectAll('*').remove();
 
-            var chartModel = [];
-            var currentDate = new Date(startDate.getTime());
+                  var xAxis = d3.svg.axis()
+                      .scale(timeScale)
+                      .orient('bottom');
 
-            while (currentDate <= endDate) {
-                var dayModel = {
-                    'date': new Date(currentDate.getTime()),
-                    'sections': [],
-                    'sectionsByName': {}
-                };
-                sections.forEach(function(section) {
-                    var sectionModel = {
-                        'name': section.name,
-                        'tasks': [],
-                        'points': 0
-                    };
-                    dayModel.sectionsByName[ section.name ] = sectionModel;
-                    dayModel.sections.push(sectionModel);
-                });
+                  var yAxis = d3.svg.axis()
+                      .scale(pointScale)
+                      .orient('left');
 
-                // Advance currentDate to the next day. This will be midnight in between
-                // the day we're processing and the next day.
-                currentDate.setDate(currentDate.getDate() + 1);
-
-                var isoDateString = currentDate.toISOString();
-                tasks.forEach(function(task) {
-                    var sectionName = getSectionAsOfDate(task, isoDateString);
-                    // null section at this point means the task didn't even exist as of
-                    // this date. Tasks that were not in any section as of this date are now
-                    // under "Uncategorized" section.
-                    if (sectionName) {
-                        var sectionModel = dayModel.sectionsByName[ sectionName ];
-                        sectionModel.tasks.push(task);
-                        sectionModel.points += task.points;
-                    }
-                });
-
-                chartModel.push(dayModel);
-            }
-
-            var width = 1000;
-            var height = 600;
-            var timeScale = d3.time.scale()
-                .domain([ startDate, endDate ])
-                .range([ 0, width ]);
-            var pointScale = d3.scale.linear()
-                .domain([
-                    0,
-                    d3.max(chartModel, function(d) {
-                        return d3.sum(d.sections, function(d) {
-                            return d.points;
-                        });
-                    })
-                ])
-                .range([ height, 0 ]);
-            var colorScale = d3.scale.category10();
-
-            var sectionLayerModel = sections.map(function(section) {
-                var sectionName = section.name;
-                var layer = {
-                    'index': section.index,
-                    'name': sectionName
-                };
-
-                layer.days = chartModel.map(function(day) {
-                    return {
-                        'date': day.date,
-                        'points': day.sectionsByName[ sectionName ].points,
-                        'tasks': day.sectionsByName[ sectionName ].tasks,
-                        'y0': 0
-                    };
-                });
-
-                return layer;
-            });
-
-            sectionLayerModel.reverse();
-
-            var stack = d3.layout.stack()
-                .values(function(layer) {
-                    return layer.days;
-                })
-                .x(function(d) {
-                    return d.date;
-                })
-                .y(function(d) {
-                    return d.points;
-                })
-                .out(function(d, y0) {
-                    d.y0 = y0;
-                });
-
-            stack(sectionLayerModel);
-
-            var streamContainer = d3.select('.cumulative-flow-viz .cumulative-flow-streams');
-            streamContainer.selectAll('*').remove();
-
-            // Set up d3's area function to draw each stream
-            var calcStreamArea = d3.svg.area()
-                .x(function(d) {
-                    return timeScale(d.date);
-                })
-                .y0(function(d) {
-                    return pointScale(d.y0);
-                })
-                .y1(function(d) {
-                    return pointScale(d.y0 + d.points);
-                });
-
-            // g for each layer dataset.
-            var streamGroups = streamContainer
-                .selectAll('g')
-                .data(sectionLayerModel, function(d) {
-                    return d.name;
-                });
-
-            // Add any entering layer as an svg:g with a svg:path element inside.
-            var enter = streamGroups
-                .enter()
-                .append('g')
-                .attr('class', function(d) {
-                    return 'section-stream-' + d.name.trim().replace(/\s+/g, '-').toLowerCase();
-                })
-                .append('path')
-                .attr('class', 'stream');
-
-            // Set the stream path for each series
-            streamGroups
-                .selectAll('.stream')
-                .attr('d', function(d) {
-                    return calcStreamArea(d.days);
-                })
-                .attr('fill', function(d) {
-                    return colorScale(d.index);
-                });
-
-            var axesContainer = d3.select('.cumulative-flow-viz .cumulative-flow-axes');
-            axesContainer.selectAll('*').remove();
-
-            var xAxis = d3.svg.axis()
-                .scale(timeScale)
-                .orient('bottom');
-
-            var yAxis = d3.svg.axis()
-                .scale(pointScale)
-                .orient('left');
-
-            axesContainer.append('g')
-                .attr('class', 'graph-axis cumulative-flow-x-axis')
-                .attr('transform', 'translate(0,' + height + ')')
-                .call(xAxis);
-            axesContainer.append('g')
-                .attr('class', 'graph-axis cumulative-flow-y-axis')
-                .call(yAxis);
-        });
+                  axesContainer.append('g')
+                      .attr('class', 'graph-axis cumulative-flow-x-axis')
+                      .attr('transform', 'translate(0,' + height + ')')
+                      .call(xAxis);
+                  axesContainer.append('g')
+                      .attr('class', 'graph-axis cumulative-flow-y-axis')
+                      .call(yAxis);
+              });
 };
-
 
